@@ -3,7 +3,7 @@ create extension if not exists "uuid-ossp";
 
 -- Clients (Members)
 create table public.clients (
-  id uuid primary key default uuid_generate_v4(),
+  id text primary key default gen_random_uuid()::text,
   "fullName" text not null,
   dni text not null,
   phone text not null,
@@ -18,7 +18,7 @@ create table public.clients (
 
 -- Payments
 create table public.payments (
-  id uuid primary key default uuid_generate_v4(),
+  id text primary key default gen_random_uuid()::text,
   "clientId" text not null,
   "clientName" text not null,
   amount numeric not null,
@@ -31,7 +31,7 @@ create table public.payments (
 
 -- Staff
 create table public.staff (
-  id uuid primary key default uuid_generate_v4(),
+  id text primary key default gen_random_uuid()::text,
   "fullName" text not null,
   role text not null,
   status text not null,
@@ -45,7 +45,7 @@ create table public.staff (
 
 -- Attendance (Staff Attendance)
 create table public.attendance (
-  id uuid primary key default uuid_generate_v4(),
+  id text primary key default gen_random_uuid()::text,
   "staffId" text not null,
   date text not null,
   "checkIn" text not null,
@@ -56,7 +56,7 @@ create table public.attendance (
 
 -- Inventory (Products)
 create table public.inventory (
-  id uuid primary key default uuid_generate_v4(),
+  id text primary key default gen_random_uuid()::text,
   code text not null,
   name text not null,
   category text not null,
@@ -69,7 +69,7 @@ create table public.inventory (
 
 -- Measurements
 create table public.measurements (
-  id uuid primary key default uuid_generate_v4(),
+  id text primary key default gen_random_uuid()::text,
   "clientId" text not null,
   date text not null,
   weight numeric not null,
@@ -84,7 +84,7 @@ create table public.measurements (
 
 -- Users (Application Admins / Managers)
 create table public.users (
-  id uuid primary key default uuid_generate_v4(),
+  id text primary key default gen_random_uuid()::text,
   username text not null,
   password text not null,
   "fullName" text not null,
