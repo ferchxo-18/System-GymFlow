@@ -56,15 +56,16 @@ interface GymContextType {
 const GymContext = createContext<GymContextType | undefined>(undefined);
 
 export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [clients, setClients] = useState<Client[]>(MOCK_CLIENTS);
-  const [payments, setPayments] = useState<Payment[]>(MOCK_PAYMENTS);
-  const [staff, setStaff] = useState<Staff[]>(MOCK_STAFF);
-  const [attendance, setAttendance] = useState<AttendanceRecord[]>(MOCK_ATTENDANCE);
-  const [inventory, setInventory] = useState<Product[]>(MOCK_INVENTORY);
-  const [measurements, setMeasurements] = useState<Measurement[]>(MOCK_MEASUREMENTS);
+  const [clients, setClients] = useState<Client[]>(isSupabaseConfigured ? [] : MOCK_CLIENTS);
+  const [payments, setPayments] = useState<Payment[]>(isSupabaseConfigured ? [] : MOCK_PAYMENTS);
+  const [staff, setStaff] = useState<Staff[]>(isSupabaseConfigured ? [] : MOCK_STAFF);
+  const [attendance, setAttendance] = useState<AttendanceRecord[]>(isSupabaseConfigured ? [] : MOCK_ATTENDANCE);
+  const [inventory, setInventory] = useState<Product[]>(isSupabaseConfigured ? [] : MOCK_INVENTORY);
+  const [measurements, setMeasurements] = useState<Measurement[]>(isSupabaseConfigured ? [] : MOCK_MEASUREMENTS);
   
   // Auth State
   const [users, setUsers] = useState<User[]>(() => {
+    if (isSupabaseConfigured) return [];
     const saved = localStorage.getItem('gym_users');
     return saved ? JSON.parse(saved) : MOCK_USERS;
   });
@@ -96,13 +97,13 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           supabase.from('users').select('*')
         ]);
 
-        if (cData && cData.length > 0) setClients(cData);
-        if (pData && pData.length > 0) setPayments(pData);
-        if (sData && sData.length > 0) setStaff(sData);
-        if (aData && aData.length > 0) setAttendance(aData);
-        if (iData && iData.length > 0) setInventory(iData);
-        if (mData && mData.length > 0) setMeasurements(mData);
-        if (uData && uData.length > 0) setUsers(uData);
+        if (cData) setClients(cData);
+        if (pData) setPayments(pData);
+        if (sData) setStaff(sData);
+        if (aData) setAttendance(aData);
+        if (iData) setInventory(iData);
+        if (mData) setMeasurements(mData);
+        if (uData) setUsers(uData);
       } catch (error) {
         console.error("Error loading data from Supabase:", error);
       }
