@@ -286,7 +286,10 @@ export const GymProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // User Management
   const addUser = async (user: User) => {
     if (isSupabaseConfigured && supabase) {
-      await supabase.from('users').insert([user]);
+      const { error } = await supabase.from('users').insert([user]);
+      if (error) {
+        console.error("Error adding user to Supabase:", error);
+      }
     }
     setUsers(prev => [...prev, user]);
   };
